@@ -36,7 +36,6 @@
 - React.js  
 - Tailwind CSS  
 - DaisyUI  
-- Axios  
 
 ### 🔹 Backend
 - Node.js  
