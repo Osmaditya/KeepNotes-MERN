@@ -1,11 +1,11 @@
 import express from "express"; //"type" : "module" in package.json  or use require
 import dotenv from "dotenv";
-import cors from "cors";    //browser security mechanism
+import cors from "cors"; //browser security mechanism
 
 import notesRoutes from "./routes/notesRoutes.js";
 import { connectDB } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
-import path from "path"
+import path from "path";
 
 dotenv.config();
 // console.log(process.env.MONGO_URI);
@@ -16,10 +16,11 @@ const app = express();
 
 //middleware        //NOT USED RATELIMITING MIDDLEWARE
 if (process.env.NODE_ENV !== "production") {
-app.use(    //Ek server(backend) allow kare ya block kare ki dusri website(frontend) usse data le sakti hai ya nahi 
-  cors({origin: "http://localhost:5173"}),
-);
-};
+  app.use(
+    //Ek server(backend) allow kare ya block kare ki dusri website(frontend) usse data le sakti hai ya nahi
+    cors({ origin: "http://localhost:5173" }),
+  );
+}
 
 app.use(express.json()); //this middleware parse the json bodies : allow access to req.body
 app.use(express.urlencoded({ extended: true })); // 👈 ADD THIS ALSO
@@ -29,6 +30,8 @@ app.use(express.urlencoded({ extended: true })); // 👈 ADD THIS ALSO
 //     next();
 // })
 app.use(rateLimiter);
+
+app.use("/api/notes", notesRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
